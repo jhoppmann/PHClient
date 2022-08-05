@@ -1,7 +1,6 @@
 package de.jhoppmann.phclient.client.data.requests;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONObject;
 
 import java.util.ArrayList;
@@ -18,9 +17,11 @@ public class AllDataJso extends JavaScriptObject {
 
 	public final native TimeJso getPrintTime() /*-{return this.result.PRINT_TIME}-*/;
 
-	private final native JavaScriptObject getPrintTimeByPrinter() /*-{return this.result.PRINT_TIME_BY_PRINTER}-*/;
+	public final native CumulativePrintsJso getCumulativeData() /*-{return this.result.CUMULATIVE_PRINTS}-*/;
 
-	private final native JavaScriptObject dataByMonth() /*-{return this.result.PRINTS_BY_MONTH_AND_PRINTER}-*/;
+	private native JavaScriptObject getPrintTimeByPrinter() /*-{return this.result.PRINT_TIME_BY_PRINTER}-*/;
+
+	private native JavaScriptObject dataByMonth() /*-{return this.result.PRINTS_BY_MONTH_AND_PRINTER}-*/;
 
 	public final Map<String, Long> getPrinterTimes() {
 		JSONObject times = new JSONObject(getPrintTimeByPrinter());

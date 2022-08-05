@@ -9,6 +9,7 @@ import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.corechart.*;
 import de.jhoppmann.phclient.client.data.requests.AllDataJso;
+import de.jhoppmann.phclient.client.data.requests.CumulativePrintsJso;
 import de.jhoppmann.phclient.client.services.ConcurrentChartLoader;
 
 import java.util.*;
@@ -27,7 +28,11 @@ public class ChartView extends SimplePanel {
 		this.presenter = presenter;
 		setWidget(content);
 		this.allData = allData;
+		CumulativePrintsJso cumulativePrints = allData.getCumulativeData();
 		content.add(new Label("Cumulative print time: " + allData.getPrintTime().getPrintTime()));
+		content.add(new Label("Cumulative prints: " + cumulativePrints.getPrints()));
+		content.add(new Label("Cumulative successes: " + cumulativePrints.getSuccesses()));
+		content.add(new Label("Cumulative fails: " + cumulativePrints.getFails()));
 		buildPrintTimePie();
 		buildPrintsByMonth();
 	}
@@ -43,14 +48,15 @@ public class ChartView extends SimplePanel {
 			data.addColumn(ColumnType.NUMBER, "Print Time");
 			for (String printer : printTimes.keySet()){
 				int printTime = printTimes.get(printer).intValue();
-				data.addRow(printer, printTime);
+				data.addRow(printer, printTime / 3600);
 			}
 
-			pieChart.setWidth("400px");
-			pieChart.setHeight("400px");
-			pieChart.draw(data);
+			pieChart.setWidth("600px");
+			pieChart.setHeight("600px");
 			PieChartOptions options = PieChartOptions.create();
+			options.setTitle("Cumulative print times (hours)");
 			options.setEnableInteractivity(true);
+			pieChart.draw(data, options);
 			content.add(pieChart);
 		});
 	}
